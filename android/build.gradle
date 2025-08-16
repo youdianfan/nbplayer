@@ -41,7 +41,7 @@ android {
         testImplementation("junit:junit:4.13.2")
         testImplementation("org.mockito:mockito-core:5.0.0")
 
-        // Use compileOnly instead of implementation to avoid AAR packaging issues
+        // ijkplayer 依赖 - 使用 compileOnly 避免 AAR 构建问题
         compileOnly files('libs/ijkplayer-cmake-release.aar')
         implementation 'androidx.annotation:annotation:1.6.0'
     }
@@ -49,9 +49,7 @@ android {
     testOptions {
         unitTests.all {
             testLogging {
-               events "passed", "skipped", "failed", "standardOut", "standardError"
-               outputs.upToDateWhen {false}
-               showStandardStreams = true
+                events("passed", "skipped", "failed", "standardOut", "standardError")
             }
         }
     }

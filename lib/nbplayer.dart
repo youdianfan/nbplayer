@@ -234,15 +234,18 @@ class Nbplayer extends ChangeNotifier {
     if (_disposed) return;
 
     try {
+      // 先取消事件订阅，避免在 Android 端释放后出现 MissingPluginException
+      await _eventSubscription?.cancel();
+      _eventSubscription = null;
+
       if (_initialized) {
+        // 然后释放 Android 端资源
         await _methodChannel.invokeMethod('release');
         await _globalChannel.invokeMethod('releasePlayer', {'playerId': _playerId.toString()});
       }
     } catch (e) {
       debugPrint('Error during release: $e');
     } finally {
-      await _eventSubscription?.cancel();
-      _eventSubscription = null;
       _disposed = true;
       _updateState(NbPlayerState.end);
     }
